@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="hiveGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <filter id="glow512" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#06b6d4" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="#0b0f19" />
+  <rect width="496" height="496" x="8" y="8" rx="112" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4" />
+  
+  <!-- Honeycomb Hexagon Base -->
+  <polygon points="256,96 394,176 394,336 256,416 118,336 118,176" fill="url(#hiveGrad512)" filter="url(#glow512)" opacity="0.95" />
+  
+  <!-- Academic Cap Overlay -->
+  <polygon points="256,150 360,208 256,266 152,208" fill="#ffffff" />
+  <path d="M192,240 L192,314 Q256,350 320,314 L320,240" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" />
+  <circle cx="365" cy="214" r="8" fill="#fbbf24" />
+  <path d="M365,222 L365,288 L355,302 L375,302 Z" fill="#fbbf24" />
+</svg>

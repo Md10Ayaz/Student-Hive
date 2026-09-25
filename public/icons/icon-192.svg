@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="hiveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#06b6d4" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <rect width="192" height="192" rx="44" fill="#0b0f19" />
+  <rect width="184" height="184" x="4" y="4" rx="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+  
+  <!-- Honeycomb Hexagon Base -->
+  <polygon points="96,36 148,66 148,126 96,156 44,126 44,66" fill="url(#hiveGrad)" filter="url(#glow)" opacity="0.95" />
+  
+  <!-- Academic Cap Overlay -->
+  <polygon points="96,56 136,78 96,100 56,78" fill="#ffffff" />
+  <path d="M72,90 L72,118 Q96,132 120,118 L120,90" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+  <circle cx="138" cy="80" r="3" fill="#fbbf24" />
+  <path d="M138,83 L138,108 L134,114 L142,114 Z" fill="#fbbf24" />
+</svg>

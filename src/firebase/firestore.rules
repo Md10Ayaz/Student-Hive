@@ -1,0 +1,103 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function isStudent() {
+      return isAuthenticated() && getUserData().role == 'student';
+    }
+    
+    function isFaculty() {
+      return isAuthenticated() && getUserData().role == 'faculty';
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && getUserData().role == 'admin';
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || (isAuthenticated() && request.auth.uid == userId);
+    }
+
+    // Attendance records
+    match /attendance/{attendanceId} {
+      // Students can only read their own attendance
+      allow read: if isStudent() && resource.data.studentUid == request.auth.uid;
+      // Faculty can read & mark attendance for their subjects
+      allow read, write: if isFaculty() || isAdmin();
+    }
+
+    // Academic marks
+    match /marks/{markId} {
+      // Student can only read their own marks
+      allow read: if isStudent() && resource.data.studentUid == request.auth.uid;
+      // Faculty can enter/update marks for their subjects
+      allow read, write: if isFaculty() || isAdmin();
+    }
+
+    // Assignments & Submissions
+    match /assignments/{assignmentId} {
+      allow read: if isAuthenticated();
+      allow write: if isFaculty() || isAdmin();
+    }
+
+    match /submissions/{submissionId} {
+      // Student can submit and view their own submission
+      allow read, create: if isStudent() && request.resource.data.studentUid == request.auth.uid;
+      // Faculty and admin can read and grade
+      allow read, update: if isFaculty() || isAdmin();
+    }
+
+    // Study materials & Syllabus
+    match /materials/{materialId} {
+      allow read: if isAuthenticated();
+      allow write: if isFaculty() || isAdmin();
+    }
+    
+    match /syllabus/{syllabusId} {
+      allow read: if isAuthenticated();
+      allow write: if isFaculty() || isAdmin();
+    }
+
+    // Timetable & Reschedules
+    match /timetable/{timetableId} {
+      allow read: if isAuthenticated();
+      allow write: if isFaculty() || isAdmin();
+    }
+
+    // Leave Requests
+    match /leaveRequests/{leaveId} {
+      allow read: if isAuthenticated() && (resource.data.studentUid == request.auth.uid || isFaculty() || isAdmin());
+      allow create: if isStudent() && request.resource.data.studentUid == request.auth.uid;
+      allow update: if isFaculty() || isAdmin();
+    }
+
+    // Complaints
+    match /complaints/{complaintId} {
+      allow create: if isAuthenticated();
+      allow read, update: if isAdmin();
+      allow read: if isStudent() && resource.data.studentUid == request.auth.uid;
+    }
+
+    // Notices
+    match /notices/{noticeId} {
+      allow read: if isAuthenticated();
+      allow write: if isFaculty() || isAdmin();
+    }
+
+    // Group Chats: chats/{chatId}/messages/{messageId}
+    match /chats/{chatId}/messages/{messageId} {
+      allow read, create: if isAuthenticated();
+    }
+  }
+}
